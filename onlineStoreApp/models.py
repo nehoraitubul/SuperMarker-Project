@@ -9,12 +9,11 @@ class Product(models.Model):
         db_table = 'products'
         ordering = ['id']
 
-    UNITS_DESCRIPTION = (('ml', 'Milligram'), ('units', 'Unit'), ('g', 'Gram'), ('kg', 'Kilogram'), ('l', 'Liter'))
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
-    catalog_number = models.BigIntegerField(db_column='catalog_number', null=False, blank=False)
+    catalog_number = models.BigIntegerField(db_column='catalog_number', null=False, blank=False, unique=True)
     manufacturer_id = models.ForeignKey('Manufacturer', on_delete=models.RESTRICT, db_column='manufacturer_id', null=True, blank=True)
-    units = models.CharField(max_length=128, db_column='units', choices=UNITS_DESCRIPTION, null=False, blank=False)
+    units = models.CharField(max_length=128, db_column='units', null=False, blank=False)
     quantity = models.IntegerField(db_column='quantity', null=False, blank=False)
     category_id = models.ForeignKey('SubCategory', on_delete=models.RESTRICT, db_column='category_id', null=True, blank=True)
     discount_status = models.BooleanField( db_column='discount_status', null=False, blank=False, default=False)
@@ -29,6 +28,7 @@ class Price(models.Model):
     class Meta:
         db_table = 'prices'
         ordering = ['id']
+        unique_together = ('product_id', 'retailer_id',)
 
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
