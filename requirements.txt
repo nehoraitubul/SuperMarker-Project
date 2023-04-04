@@ -3,3 +3,6 @@ psycopg2
 djangorestframework
 django-cors-headers
 djangorestframework-simplejwt
+beautifulsoup4
+requests
+pandas
