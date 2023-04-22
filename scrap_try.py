@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 import gzip
 import urllib.request
 from onlineStoreApp.models import Product, Retailer, Price, Manufacturer
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 import time
 
@@ -57,6 +57,9 @@ if __name__ == '__main__':
     promo_url = b.find('a')['href']
     print(promo_url)
 
+    end = time.time()
+    print('enf of scraping', end - start)
+
 
 
     # request to DataFrame
@@ -66,6 +69,9 @@ if __name__ == '__main__':
         xml_data = f.read()
 
     root = ET.fromstring(xml_data)
+
+    end = time.time()
+    print('xml to memory', end - start)
 
     items_list = []
 
@@ -81,16 +87,115 @@ if __name__ == '__main__':
 
     df = pd.DataFrame(items_list)
 
+    # result = df[df['ItemCode'] == '10900145015']
+    # pd.set_option('display.max_rows', None)  # to display all rows
+    # pd.set_option('display.max_columns', None)  # to display all columns
+    # print(result['ItemPrice'])
+
+    end = time.time()
+    print('pandas dataFrame', end - start)
+
     # Convert data types
     df['Quantity'] = pd.to_numeric(df['Quantity'])
     df['QtyInPackage'] = pd.to_numeric(df['QtyInPackage'])
     df['ItemPrice'] = pd.to_numeric(df['ItemPrice'])
     df['UnitOfMeasurePrice'] = pd.to_numeric(df['UnitOfMeasurePrice'])
 
+    processed_catalog_numbers = []
+
+    current_timestamp = int(timezone.now().timestamp())
+    retailer, created = Retailer.objects.get_or_create(name='Shufersal', defaults={'last_scan': current_timestamp})
+    retailer.last_scan = current_timestamp
+    retailer.save()
+
+    created_itemcodes = []
+
+    try:
+        with transaction.atomic():
+            for index, row in df.iterrows():
+                processed_catalog_numbers.append(row['ItemCode'])
+                num += 1
+                if row['ManufacturerName'] is None or row['ManufacturerName'] == 'None':
+                    manufacturer_name = 'כללי'
+                else:
+                    manufacturer_name = row['ManufacturerName']
+                manufacturer = Manufacturer.objects.get_or_create(name=manufacturer_name)
+                # print(manufacturer[0], type(manufacturer[0]))
+
+                unit_detail = units_converter(row['UnitQty'])
+
+                defaults = {
+                    'name': row['ItemName'],
+                    'quantity': row['Quantity'],
+                    'product_status': row['ItemStatus'],
+                    'discount_status': row['AllowDiscount'],
+                    'unit_of_measure_price': row['UnitOfMeasurePrice'],
+                    'units': unit_detail[0],
+                    'unit_of_measure': unit_detail[1],
+                    'manufacturer_id': manufacturer[0],
+                }
+                try:
+                    product, created = Product.objects.update_or_create(catalog_number=row['ItemCode'], defaults=defaults)
+
+                    if created:
+                        created_itemcodes.append(row['ItemCode'])
+
+                except IntegrityError:
+                    product = Product.objects.get(catalog_number=row['ItemCode'])
+                    product.name = row['ItemName']
+                    product.quantity = row['Quantity']
+                    product.product_status = True if row['ItemStatus'] == 1 else False
+                    product.discount_status = True if row['AllowDiscount'] == 1 else False
+                    product.unit_of_measure_price = row['UnitOfMeasurePrice']
+                    product.units = unit_detail[0]
+                    product.unit_of_measure = unit_detail[1]
+                    product.manufacturer_id = manufacturer[0]
+                    product.save()
+
+
+                try:
+                    price, created = Price.objects.update_or_create(product_id=product, retailer_id=retailer, defaults={'price': row['ItemPrice']})
+
+                except IntegrityError as i:
+                    print(i)
+
+    except IntegrityError as i:
+        print(i)
+
+
+    print(num)
+    end = time.time()
+    print(end - start)
+
+    # Set product_status to False
+    unprocessed_products = Product.objects.exclude(catalog_number__in=processed_catalog_numbers)
+    count = unprocessed_products.update(product_status=False)
+    print(f"{count} products were updated")
+
+    end = time.time()
+    print(end - start)
+
+
+
+
+
+
+
+
+
     # current_timestamp = int(timezone.now().timestamp())
     # retailer, created = Retailer.objects.get_or_create(name='Shufersal', defaults={'last_scan': current_timestamp})
     # retailer.last_scan = current_timestamp
     # retailer.save()
+    #
+    # manufacturer_create_list = []
+    # manufacturer_update_list = []
+    #
+    # product_create_list = []
+    # product_update_list = []
+    #
+    # price_create_list = []
+    # price_update_list = []
     #
     # for index, row in df.iterrows():
     #     num += 1
@@ -98,26 +203,28 @@ if __name__ == '__main__':
     #         manufacturer_name = 'כללי'
     #     else:
     #         manufacturer_name = row['ManufacturerName']
-    #     manufacturer = Manufacturer.objects.get_or_create(name=manufacturer_name)
-    #     # print(manufacturer[0], type(manufacturer[0]))
+    #
+    #     try:
+    #         manufacturer = Manufacturer.objects.get(name=manufacturer_name)
+    #
+    #         if manufacturer.country != row['ManufactureCountry']:
+    #             manufacturer.country = row['ManufactureCountry']
+    #
+    #             manufacturer_update_list.append(manufacturer)
+    #
+    #     except ObjectDoesNotExist:
+    #         manufacturer = Manufacturer(
+    #             name = manufacturer_name,
+    #             country = row['ManufactureCountry'],
+    #         )
+    #         manufacturer_create_list.append(manufacturer)
+    #
     #
     #     unit_detail = units_converter(row['UnitQty'])
     #
-    #     defaults = {
-    #         'name': row['ItemName'],
-    #         'quantity': row['Quantity'],
-    #         'product_status': row['ItemStatus'],
-    #         'discount_status': row['AllowDiscount'],
-    #         'unit_of_measure_price': row['UnitOfMeasurePrice'],
-    #         'units': unit_detail[0],
-    #         'unit_of_measure': unit_detail[1],
-    #         'manufacturer_id': manufacturer[0],
-    #     }
     #     try:
-    #         product, created = Product.objects.update_or_create(catalog_number=row['ItemCode'], defaults=defaults)
+    #         product= Product.objects.get(catalog_number=row['ItemCode'])
     #
-    #     except IntegrityError:
-    #         product = Product.objects.get(catalog_number=row['ItemCode'])
     #         product.name = row['ItemName']
     #         product.quantity = row['Quantity']
     #         product.product_status = True if row['ItemStatus'] == 1 else False
@@ -125,124 +232,53 @@ if __name__ == '__main__':
     #         product.unit_of_measure_price = row['UnitOfMeasurePrice']
     #         product.units = unit_detail[0]
     #         product.unit_of_measure = unit_detail[1]
-    #         product.manufacturer_id = manufacturer[0]
-    #         product.save()
+    #         product.manufacturer_id = manufacturer
     #
+    #         product_update_list.append(product)
+    #
+    #     except ObjectDoesNotExist:
+    #         product = Product(
+    #             name = row['ItemName'],
+    #             quantity = row['Quantity'],
+    #             product_status = row['ItemStatus'],
+    #             discount_status = row['AllowDiscount'],
+    #             unit_of_measure_price = row['UnitOfMeasurePrice'],
+    #             units = unit_detail[0],
+    #             unit_of_measure = unit_detail[1],
+    #             manufacturer_id = manufacturer,
+    #         )
+    #         product_create_list.append(product)
     #
     #     try:
-    #         price, created = Price.objects.update_or_create(product_id=product, retailer_id=retailer, defaults={'price': row['ItemPrice']})
+    #         price = Price.objects.get(product_id=product, retailer_id=retailer)
     #
-    #     except IntegrityError:
-    #         pass
+    #         if price.price != row['ItemPrice']:
+    #             price.price = row['ItemPrice']
+    #
+    #             price_update_list.append(price)
+    #
+    #     except ObjectDoesNotExist:
+    #         price = Price(
+    #             product_id = product,
+    #             retailer_id = retailer,
+    #             price = row['ItemPrice'],
+    #         )
+    #
+    # if manufacturer_create_list:
+    #     Manufacturer.objects.bulk_create(manufacturer_create_list)
+    # if manufacturer_update_list:
+    #     Manufacturer.objects.bulk_update(manufacturer_update_list, ['country'])
+    #
+    # if product_create_list:
+    #     Product.objects.bulk_create(product_create_list)
+    # if product_update_list:
+    #     Product.objects.bulk_update(product_update_list, ['name', 'manufacturer_id', 'quantity', 'product_status', 'unit_of_measure_price', 'units', 'unit_of_measure', 'discount_status',])
+    #
+    # if price_create_list:
+    #     Price.objects.bulk_create(price_create_list)
+    # if price_update_list:
+    #     Price.objects.bulk_update(price_update_list, ['price'])
     #
     # print(num)
     # end = time.time()
     # print(end - start)
-
-
-
-
-
-
-
-
-
-    current_timestamp = int(timezone.now().timestamp())
-    retailer, created = Retailer.objects.get_or_create(name='Shufersal', defaults={'last_scan': current_timestamp})
-    retailer.last_scan = current_timestamp
-    retailer.save()
-
-    manufacturer_create_list = []
-    manufacturer_update_list = []
-
-    product_create_list = []
-    product_update_list = []
-
-    price_create_list = []
-    price_update_list = []
-
-    for index, row in df.iterrows():
-        num += 1
-        if row['ManufacturerName'] is None or row['ManufacturerName'] == 'None':
-            manufacturer_name = 'כללי'
-        else:
-            manufacturer_name = row['ManufacturerName']
-
-        try:
-            manufacturer = Manufacturer.objects.get(name=manufacturer_name)
-
-            if manufacturer.country != row['ManufactureCountry']:
-                manufacturer.country = row['ManufactureCountry']
-
-                manufacturer_update_list.append(manufacturer)
-
-        except ObjectDoesNotExist:
-            manufacturer = Manufacturer(
-                name = manufacturer_name,
-                country = row['ManufactureCountry'],
-            )
-            manufacturer_create_list.append(manufacturer)
-
-
-        unit_detail = units_converter(row['UnitQty'])
-
-        try:
-            product= Product.objects.get(catalog_number=row['ItemCode'])
-
-            product.name = row['ItemName']
-            product.quantity = row['Quantity']
-            product.product_status = True if row['ItemStatus'] == 1 else False
-            product.discount_status = True if row['AllowDiscount'] == 1 else False
-            product.unit_of_measure_price = row['UnitOfMeasurePrice']
-            product.units = unit_detail[0]
-            product.unit_of_measure = unit_detail[1]
-            product.manufacturer_id = manufacturer
-
-            product_update_list.append(product)
-
-        except ObjectDoesNotExist:
-            product = Product(
-                name = row['ItemName'],
-                quantity = row['Quantity'],
-                product_status = row['ItemStatus'],
-                discount_status = row['AllowDiscount'],
-                unit_of_measure_price = row['UnitOfMeasurePrice'],
-                units = unit_detail[0],
-                unit_of_measure = unit_detail[1],
-                manufacturer_id = manufacturer,
-            )
-            product_create_list.append(product)
-
-        try:
-            price = Price.objects.get(product_id=product, retailer_id=retailer)
-
-            if price.price != row['ItemPrice']:
-                price.price = row['ItemPrice']
-
-                price_update_list.append(price)
-
-        except ObjectDoesNotExist:
-            price = Price(
-                product_id = product,
-                retailer_id = retailer,
-                price = row['ItemPrice'],
-            )
-
-    if manufacturer_create_list:
-        Manufacturer.objects.bulk_create(manufacturer_create_list)
-    if manufacturer_update_list:
-        Manufacturer.objects.bulk_update(manufacturer_update_list, ['country'])
-
-    if product_create_list:
-        Product.objects.bulk_create(product_create_list)
-    if product_update_list:
-        Product.objects.bulk_update(product_update_list, ['name', 'manufacturer_id', 'quantity', 'product_status', 'unit_of_measure_price', 'units', 'unit_of_measure', 'discount_status',])
-
-    if price_create_list:
-        Price.objects.bulk_create(price_create_list)
-    if price_update_list:
-        Price.objects.bulk_update(price_update_list, ['price'])
-
-    print(num)
-    end = time.time()
-    print(end - start)

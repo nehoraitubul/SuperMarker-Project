@@ -14,12 +14,17 @@ class Product(models.Model):
     catalog_number = models.BigIntegerField(db_column='catalog_number', null=False, blank=False, unique=True)
     manufacturer_id = models.ForeignKey('Manufacturer', on_delete=models.RESTRICT, db_column='manufacturer_id', null=True, blank=True)
     units = models.CharField(max_length=128, db_column='units', null=False, blank=False)
+    category_id = models.ForeignKey('SubSubSubCategory', on_delete=models.RESTRICT, db_column='category_id', null=True, blank=True)
     quantity = models.IntegerField(db_column='quantity', null=False, blank=False)
-    category_id = models.ForeignKey('SubCategory', on_delete=models.RESTRICT, db_column='category_id', null=True, blank=True)
     discount_status = models.BooleanField( db_column='discount_status', null=False, blank=False, default=False)
     product_status = models.BooleanField( db_column='product_status', null=False, blank=False, default=True)
     unit_of_measure = models.CharField(max_length=256, db_column='unit_of_measure', null=False, blank=False)
     unit_of_measure_price = models.IntegerField(db_column='unit_of_measure_price', null=False, blank=False)
+    product_info_id = models.ForeignKey('ProductInfo', on_delete=models.SET_NULL, db_column='product_info_id', null=True, blank=True)
+    image = models.URLField(db_column='image', null=True, blank=True)
+    sold_qty = models.IntegerField(db_column='sold_qty', null=False, blank=False, default=0)
+    rating = models.IntegerField(db_column='rating', null=False, blank=False, default=0)
+    checked = models.IntegerField(db_column='checked', null=False, blank=False, default=0)
 
 
 
@@ -32,7 +37,7 @@ class Price(models.Model):
 
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
-    price = models.SmallIntegerField(db_column='price', null=False, blank=False)
+    price = models.DecimalField(db_column='price', null=False, blank=False,max_digits=10, decimal_places=2)
 
 
 
@@ -64,7 +69,7 @@ class Category(models.Model):
         db_table = 'categories'
         ordering = ['id']
 
-    name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
+    name = models.CharField(max_length=256, db_column='name', null=False, blank=False, unique=True)
 
 
 
@@ -76,6 +81,28 @@ class SubCategory(models.Model):
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
     category_id = models.ForeignKey('Category', on_delete=models.RESTRICT, db_column='category_id', null=True, blank=True)
+
+
+
+class SubSubCategory(models.Model):
+
+    class Meta:
+        db_table = 'sub_sub_categories'
+        ordering = ['id']
+
+    name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
+    sub_category_id = models.ForeignKey('SubCategory', on_delete=models.RESTRICT, db_column='sub_category_id', null=True, blank=True)
+
+
+
+class SubSubSubCategory(models.Model):
+
+    class Meta:
+        db_table = 'sub_sub_sub_categories'
+        ordering = ['id']
+
+    name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
+    sub_sub_category_id = models.ForeignKey('SubSubCategory', on_delete=models.RESTRICT, db_column='sub_sub_category_id', null=True, blank=True)
 
 
 
@@ -127,4 +154,39 @@ class Cart(models.Model):
     date = models.BigIntegerField(db_column='date', null=False, blank=False)
     price = models.IntegerField(db_column='price', null=False, blank=False)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
-    cart_status = models.BooleanField( db_column='cart_status', null=False, blank=False, default=True)
+    cart_status = models.BooleanField(db_column='cart_status', null=False, blank=False, default=True)
+
+
+
+class ProductInfo(models.Model):
+
+    class Meta:
+        db_table = 'products_info'
+        ordering = ['id']
+
+    dietary_fiber = models.CharField(max_length=128, db_column='dietary_fiber', null=True, blank=True)       # סיבים תזונתיים
+    sugars_from_carbohydrates = models.CharField(max_length=128, db_column='sugars_from_carbohydrates', null=True, blank=True)       # סוכרים מפחמימות
+    energy = models.CharField(max_length=128, db_column='energy', null=True, blank=True)       # אנרגיה
+    proteins = models.CharField(max_length=128, db_column='proteins', null=True, blank=True)       # חלבונים
+    carbohydrates = models.CharField(max_length=128, db_column='carbohydrates', null=True, blank=True)       # פחמימות
+    fats = models.CharField(max_length=128, db_column='fats', null=True, blank=True)        # שומנים
+    sodium = models.CharField(max_length=128, db_column='sodium', null=True, blank=True)      # נתרן
+    salt = models.CharField(max_length=128, db_column='salt', null=True, blank=True)        #מלח
+    cholesterol = models.CharField(max_length=128, db_column='cholesterol', null=True, blank=True)     # כולסטרול
+    saturated_fat = models.CharField(max_length=128, db_column='saturated_fat', null=True, blank=True)       # שומן רווי
+    trans_fatty_acids = models.CharField(max_length=128, db_column='trans_fatty_acids', null=True, blank=True)       # חומצות שומן טראנס
+    sugar = models.CharField(max_length=128, db_column='sugar', null=True, blank=True)       # סוכר
+    iron = models.CharField(max_length=128, db_column='iron', null=True, blank=True)  # ברזל
+    calcium = models.CharField(max_length=128, db_column='calcium', null=True, blank=True)  # סידן
+    local_rabbinate = models.CharField(max_length=128, db_column='local_rabbinate', null=True, blank=True)     # רבנות מקומית
+    kosher_type = models.CharField(max_length=128, db_column='kosher_type', null=True, blank=True)     #פרווה - חלבי - בשרי
+    kosher = models.CharField(max_length=128, db_column='kosher', null=True, blank=True)      # כשרות
+    passover = models.CharField(max_length=128, db_column='passover', null=True, blank=True)         # פסח
+    component = models.TextField(db_column='component', null=True, blank=True)        # רכיבים
+    allergies_properties = models.CharField(max_length=128, db_column='allergies_properties', null=True, blank=True)        # מכיל לאלרגנים
+    allergies_traces = models.CharField(max_length=512, db_column='allergies_traces', null=True, blank=True)         # עלול להכיל לאלרגנים
+    no_preserv = models.BooleanField(db_column='no_preserv', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
+    lactose_free = models.BooleanField(db_column='lactose_free', null=False, blank=False, default=False) #   סימון בריאותי - מכיל לקטוז
+    gluten_free =  models.BooleanField(db_column='gluten_free', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
+    organic =  models.BooleanField(db_column='organic', null=False, blank=False, default=False) # סימון בריאותי - אורגני
+    description = models.TextField(db_column='description', null=True, blank=True)  # על המוצר
