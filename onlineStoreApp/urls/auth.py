@@ -5,9 +5,13 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from onlineStoreApp.views.auth import signup, me
+
 urlpatterns = [
     # All URLS Patterns in auth
-    # path('signup/', signup),
+    path('signup/', signup),
+    path('me/', me),
+
 
     # Access check
     path('token/', TokenObtainPairView.as_view()),

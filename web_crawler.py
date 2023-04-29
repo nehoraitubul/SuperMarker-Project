@@ -16,15 +16,34 @@ import time
 import json
 import re
 import sys
+import re
 
 # ProductInfo.objects.filter(id__gte=8).delete()
 # Product.objects.filter(id__gte=1).update(checked=0)
+# Product.objects.filter(id__range=(4500, 6500)).update(checked=0)
 # sys.exit()
+def remove_numbers_7290(number):
+    print("here")
+    number_str = str(number)
+    index = number_str.find("729")
+
+    if index != -1:
+        index += len("729")
+        while number_str[index] == "0":
+            index += 1
+
+    result = number_str[index:]
+    return result
+
+# a = 7290000000022
+# print(remove_numbers_7290(a))
+# sys.exit()
+
 
 
 products_without_info = Product.objects.filter(product_info_id=None)
 print(products_without_info.count())
-# fs = Product.objects.filter(catalog_number=3282770014105)
+# fs = Product.objects.filter(catalog_number=7290000000190)
 # product = fs.first()
 # print(product.id)
 # sys.exit()
@@ -38,10 +57,13 @@ for k in products_without_info:
     print(k.catalog_number)
     if num >= 5000:
         break
-    num += 1
     if k.checked == 1:
         continue
-    time.sleep(4.2)
+    # k.checked = 1
+    # k.save()
+    # sys.exit()
+    num += 1
+    time.sleep(6.7)
 
 
     # base_link = f'https://www.shufersal.co.il/online/he/p/P_3161911229199/json?cartContext%5BopenFrom%5D=CATEGORY&cartContext%5BrecommendationType%5D=PRODUCT'
@@ -49,10 +71,21 @@ for k in products_without_info:
     base_link = f'https://www.shufersal.co.il/online/he/p/P_{k.catalog_number}/json?cartContext%5BopenFrom%5D=CATEGORY&cartContext%5BrecommendationType%5D=PRODUCT'
 
     response = requests.get(base_link)
+    # print(response)
+
     if response.status_code == 404:
-        k.checked = 1
-        k.save()
-        continue
+        if re.search(r"729000", str(k.catalog_number)):
+            new_num = remove_numbers_7290(k.catalog_number)
+            base_link = f'https://www.shufersal.co.il/online/he/p/P_{new_num}/json?cartContext%5BopenFrom%5D=CATEGORY&cartContext%5BrecommendationType%5D=PRODUCT'
+            response = requests.get(base_link)
+            if response.status_code == 404:
+                k.checked = 1
+                k.save()
+                continue
+        else:
+            k.checked = 1
+            k.save()
+            continue
     # time.sleep(6)
     soup = BeautifulSoup(response.content, "html.parser")
     oos = soup.find('div', class_='productDetails notOverlay miglog-prod-outOfStock')
@@ -71,9 +104,18 @@ for k in products_without_info:
         base_link = f'https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%A9%D7%A7%D7%90%D7%95%D7%AA%2C-%D7%90%D7%9C%D7%9B%D7%95%D7%94%D7%95%D7%9C-%D7%95%D7%99%D7%99%D7%9F/%D7%99%D7%99%D7%A0%D7%95%D7%AA-%D7%95%D7%AA%D7%99%D7%A8%D7%95%D7%A9/%D7%9E%D7%99%D7%A5-%D7%A2%D7%A0%D7%91%D7%99%D7%9D-%D7%AA%D7%99%D7%A8%D7%95%D7%A9/%D7%9E%D7%99%D7%A5-%D7%A2%D7%A0%D7%91%D7%99%D7%9D-%D7%AA%D7%99%D7%A8%D7%95%D7%A9/p/P_{k.catalog_number}'
         response = requests.get(base_link)
         if response.status_code == 404:
-            k.checked = 1
-            k.save()
-            continue
+            if re.search(r"729000", str(k.catalog_number)):
+                new_num = remove_numbers_7290(k.catalog_number)
+                base_link = f'https://www.shufersal.co.il/online/he/%D7%A7%D7%98%D7%92%D7%95%D7%A8%D7%99%D7%95%D7%AA/%D7%A1%D7%95%D7%A4%D7%A8%D7%9E%D7%A8%D7%A7%D7%98/%D7%9E%D7%A9%D7%A7%D7%90%D7%95%D7%AA%2C-%D7%90%D7%9C%D7%9B%D7%95%D7%94%D7%95%D7%9C-%D7%95%D7%99%D7%99%D7%9F/%D7%99%D7%99%D7%A0%D7%95%D7%AA-%D7%95%D7%AA%D7%99%D7%A8%D7%95%D7%A9/%D7%9E%D7%99%D7%A5-%D7%A2%D7%A0%D7%91%D7%99%D7%9D-%D7%AA%D7%99%D7%A8%D7%95%D7%A9/%D7%9E%D7%99%D7%A5-%D7%A2%D7%A0%D7%91%D7%99%D7%9D-%D7%AA%D7%99%D7%A8%D7%95%D7%A9/p/P_{new_num}'
+                response = requests.get(base_link)
+                if response.status_code == 404:
+                    k.checked = 1
+                    k.save()
+                    continue
+            else:
+                k.checked = 1
+                k.save()
+                continue
         soup = BeautifulSoup(response.content, "html.parser")
 
 
@@ -101,6 +143,8 @@ for k in products_without_info:
                 if not category.get('class'):
                     category_name = category.find('span', itemprop='name').text.strip()
                     category_names.append(category_name)
+
+            print(category_names)
 
             if len(category_names) == 0:
                 k.checked = 1
@@ -154,8 +198,8 @@ for k in products_without_info:
             print(f"Error creating category 3: {e}")
             category_4 = SubSubSubCategory(name=category_level4, sub_sub_category_id=category_3)
             category_4.save()
-        except IntegrityError:
-            print('IntegrityError')
+        # except IntegrityError:
+        #     print('IntegrityError')
 
 
     except Exception:
@@ -169,12 +213,12 @@ for k in products_without_info:
             print("DESCRIPTION1")
             description = soup.find('div', class_='remarksText')
             description_text = description.find('div').prettify().strip()
-            print(description_text)
+            # print(description_text)
         else:
             print("DESCRIPTION2")
             description = soup.find('div', class_='paddingWrapper')
             description_text  = description.find('div', class_='desc').text.strip()
-            print(description_text)
+            # print(description_text)
 
         description_text = description_text.replace('\x00', '')
         product_info.description = description_text

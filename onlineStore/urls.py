@@ -18,4 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('api/auth/', include('onlineStoreApp.urls.auth')),
+    path('api/product/', include('onlineStoreApp.urls.product')),
+    path('api/cart/', include('onlineStoreApp.urls.cart')),
+    path('api/search/', include('onlineStoreApp.urls.search')),
 ]

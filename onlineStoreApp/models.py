@@ -1,7 +1,14 @@
+import uuid
+import time
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchVectorField
 
 # Create your models here.
+
+def current_timestamp():
+    return int(time.time())
 
 class Product(models.Model):
 
@@ -25,7 +32,7 @@ class Product(models.Model):
     sold_qty = models.IntegerField(db_column='sold_qty', null=False, blank=False, default=0)
     rating = models.IntegerField(db_column='rating', null=False, blank=False, default=0)
     checked = models.IntegerField(db_column='checked', null=False, blank=False, default=0)
-
+    search_vector = SearchVectorField(null=True, blank=True)
 
 
 class Price(models.Model):
@@ -137,6 +144,7 @@ class CartProduct(models.Model):
     class Meta:
         db_table = 'cart_products'
         ordering = ['id']
+        unique_together = ('cart_id', 'product_id')
 
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
     quantity = models.SmallIntegerField(db_column='quantity', null=False, blank=False)
@@ -150,11 +158,12 @@ class Cart(models.Model):
         db_table = 'carts'
         ordering = ['id']
 
-    user_id = models.ForeignKey(User, on_delete=models.RESTRICT, db_column='user_id', null=False, blank=False)
-    date = models.BigIntegerField(db_column='date', null=False, blank=False)
-    price = models.IntegerField(db_column='price', null=False, blank=False)
-    retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
+    user_id = models.ForeignKey(User, on_delete=models.RESTRICT, db_column='user_id', null=True, blank=True)
+    date = models.BigIntegerField(db_column='date', null=False, blank=False, default=current_timestamp)
+    price = models.IntegerField(db_column='price', null=False, blank=False, default=0)
+    # retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
     cart_status = models.BooleanField(db_column='cart_status', null=False, blank=False, default=True)
+    cart_key = models.UUIDField(db_column='cart_key', default=uuid.uuid4, unique=True)
 
 
 
@@ -183,8 +192,8 @@ class ProductInfo(models.Model):
     kosher = models.CharField(max_length=128, db_column='kosher', null=True, blank=True)      # כשרות
     passover = models.CharField(max_length=128, db_column='passover', null=True, blank=True)         # פסח
     component = models.TextField(db_column='component', null=True, blank=True)        # רכיבים
-    allergies_properties = models.CharField(max_length=128, db_column='allergies_properties', null=True, blank=True)        # מכיל לאלרגנים
-    allergies_traces = models.CharField(max_length=512, db_column='allergies_traces', null=True, blank=True)         # עלול להכיל לאלרגנים
+    allergies_properties = models.CharField(max_length=768, db_column='allergies_properties', null=True, blank=True)        # מכיל לאלרגנים
+    allergies_traces = models.CharField(max_length=768, db_column='allergies_traces', null=True, blank=True)         # עלול להכיל לאלרגנים
     no_preserv = models.BooleanField(db_column='no_preserv', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
     lactose_free = models.BooleanField(db_column='lactose_free', null=False, blank=False, default=False) #   סימון בריאותי - מכיל לקטוז
     gluten_free =  models.BooleanField(db_column='gluten_free', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
