@@ -4,21 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac75e63c-923f-47f8-880b-b2d7e441b098" name="Changes" comment="scrap">
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/cart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/product.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/search.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/urls/cart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/urls/product.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/urls/search.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/views/cart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/views/product.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/views/search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStore/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStoreApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStoreApp/urls/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/urls/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web_crawler.py" beforeDir="false" afterPath="$PROJECT_DIR$/web_crawler.py" afterDir="false" />
+    <list default="true" id="ac75e63c-923f-47f8-880b-b2d7e441b098" name="Changes" comment="push">
+      <change beforePath="$PROJECT_DIR$/onlineStore/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682204446732</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="push">
+      <created>1682805523133</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682805523133</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -167,7 +161,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="scrap and db for Product-Manuf-Retail-Price" />
     <MESSAGE value="scrap" />
-    <option name="LAST_COMMIT_MESSAGE" value="scrap" />
+    <MESSAGE value="push" />
+    <option name="LAST_COMMIT_MESSAGE" value="push" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
