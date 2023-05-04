@@ -44,7 +44,7 @@ class Price(models.Model):
 
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
-    price = models.DecimalField(db_column='price', null=False, blank=False,max_digits=10, decimal_places=2)
+    price = models.DecimalField(db_column='price', null=False, blank=False, max_digits=10, decimal_places=2)
 
 
 
@@ -160,11 +160,12 @@ class Cart(models.Model):
 
     user_id = models.ForeignKey(User, on_delete=models.RESTRICT, db_column='user_id', null=True, blank=True)
     date = models.BigIntegerField(db_column='date', null=False, blank=False, default=current_timestamp)
-    price = models.IntegerField(db_column='price', null=False, blank=False, default=0)
+    price = models.DecimalField(db_column='price', null=False, blank=False, default=0, max_digits=10, decimal_places=2)
     # retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
     cart_status = models.BooleanField(db_column='cart_status', null=False, blank=False, default=True)
     cart_key = models.UUIDField(db_column='cart_key', default=uuid.uuid4, unique=True)
 
+    products = models.ManyToManyField('Product', related_name='cart', through='CartProduct')
 
 
 class ProductInfo(models.Model):

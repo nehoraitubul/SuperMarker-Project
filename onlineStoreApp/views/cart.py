@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 
-from onlineStoreApp.models import Product, Cart, CartProduct
+from onlineStoreApp.models import Product, Cart, CartProduct, Price
 from onlineStoreApp.serializers.cart import CartSerializer, CartSerializerWithoutKey
 from onlineStoreApp.serializers.product import ProductSerializer
 from django.db.models import F, Sum
@@ -60,8 +60,24 @@ class CartViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.Upd
             cart_product = CartProduct.objects.create(cart_id=cart, product_id=product_instance, quantity=quantity)
 
 
-        cart.price = CartProduct.objects.filter(cart_id=cart).aggregate(Sum('product_id__price__price'))[
-                         'product_id__price__price__sum'] or 0
+
+        cart_products_qs = cart.products.all()
+        cart_product_ids = [cart_prod.id for cart_prod in cart_products_qs]
+        all_prices = Price.objects.filter(retailer_id=5, product_id__in=cart_product_ids)
+        # cart_products = cart.cartproduct_set.all()
+        sum = 0
+        for i in all_prices:
+            curr_product = cart.cartproduct_set.filter(product_id=i.product_id)
+            quantity = curr_product[0].quantity
+            print(type(quantity))
+            sum += i.price * quantity
+
+
+
+        print('total sum:', sum)
+
+
+        cart.price = sum
         cart.save()
 
 
