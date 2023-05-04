@@ -44,10 +44,10 @@ class CartViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.Upd
         serializer = CartSerializer(cart)
         return Response({'cart': serializer.data})
 
-    def patch(self, request):
+    def partial_update(self, request, *args, **kwargs):
         product_id = request.data.get('product')
         quantity = request.data.get('quantity')
-        cart_id = request.data.get('cart_id')
+        cart_id = kwargs['pk']   # !!
         key = request.data.get('key')
         product_instance = get_object_or_404(Product, catalog_number=product_id, product_status=True)
         cart = get_object_or_404(Cart, cart_key=key, id=cart_id)
