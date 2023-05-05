@@ -58,6 +58,7 @@ class SearchViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                     sub_category_id__in=SubCategory.objects.filter(id=category2_query).values_list('id', flat=True)).values_list(
                     'id', flat=True)).values_list('id', flat=True))
 
+
         # Check for sc1 query parameter
         if category1_query:
             return queryset.filter(product_status=True)

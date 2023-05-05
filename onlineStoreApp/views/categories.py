@@ -66,14 +66,3 @@ def get_categories(request):
     #
     #
     # return Response(data=category_serializer.data)
-
-
-# @api_view(['GET'])
-# def get_all_categories(request):
-#     try:
-#         category = request.query_params.get('category')
-#     except:
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
-#     categories = SubSubCategory.objects.all()
-#     category_serializer = AllCategorySerializer(categories, many=True)
-#     return Response(data=category_serializer.data)

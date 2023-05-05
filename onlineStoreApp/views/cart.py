@@ -64,7 +64,6 @@ class CartViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.Upd
         cart_products_qs = cart.products.all()
         cart_product_ids = [cart_prod.id for cart_prod in cart_products_qs]
         all_prices = Price.objects.filter(retailer_id=5, product_id__in=cart_product_ids)
-        # cart_products = cart.cartproduct_set.all()
         sum = 0
         for i in all_prices:
             curr_product = cart.cartproduct_set.filter(product_id=i.product_id)
@@ -72,9 +71,7 @@ class CartViewSet(mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.Upd
             print(type(quantity))
             sum += i.price * quantity
 
-
-
-        print('total sum:', sum)
+        # print('total sum:', sum)
 
 
         cart.price = sum
