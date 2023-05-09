@@ -26,7 +26,7 @@ class Product(models.Model):
     discount_status = models.BooleanField( db_column='discount_status', null=False, blank=False, default=False)
     product_status = models.BooleanField( db_column='product_status', null=False, blank=False, default=True)
     unit_of_measure = models.CharField(max_length=256, db_column='unit_of_measure', null=False, blank=False)
-    unit_of_measure_price = models.IntegerField(db_column='unit_of_measure_price', null=False, blank=False)
+    unit_of_measure_price = models.DecimalField(db_column='unit_of_measure_price', null=False, blank=False, max_digits=10, decimal_places=2)
     product_info_id = models.ForeignKey('ProductInfo', on_delete=models.SET_NULL, db_column='product_info_id', null=True, blank=True)
     image = models.URLField(db_column='image', null=True, blank=True)
     sold_qty = models.IntegerField(db_column='sold_qty', null=False, blank=False, default=0)
