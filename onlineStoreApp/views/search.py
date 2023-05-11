@@ -67,4 +67,6 @@ class SearchViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if category_filter:
             queryset = queryset.filter(category_filter).filter(product_status=True)
 
+        # queryset = queryset.order_by('catalog_number', 'name').distinct('catalog_number')
+
         return queryset
