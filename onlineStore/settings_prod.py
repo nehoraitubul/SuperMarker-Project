@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'super_aws_db',
         'USER': 'postgres',
-        'PASSWORD': '0258',
+        'PASSWORD': '02580258',
         'HOST': 'superproject.cjdfcbp7nkk1.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
