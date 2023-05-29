@@ -1,0 +1,176 @@
+import os
+
+from django.core.exceptions import ObjectDoesNotExist
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "onlineStore.settings"
+
+import django
+
+django.setup()
+
+from bs4 import BeautifulSoup
+import pandas as pd
+import requests
+import xml.etree.ElementTree as ET
+import gzip
+import urllib.request
+from onlineStoreApp.models import Product, Retailer, Price, Manufacturer
+from django.db import IntegrityError, transaction
+from django.utils import timezone
+import time
+
+
+# http://prices.shufersal.co.il/FileObject/UpdateCategory?catID=0&storeId=413
+
+
+
+if __name__ == '__main__':
+    start = time.time()
+
+    num = 0
+
+    def units_converter(unit):
+        conversions = {
+            'יחידה': ['units', 1],
+            'גרמים': ['g', 100],
+            'מיליליטרים': ['ml', 100],
+            'קילוגרמים': ['kg', 1],
+            'ליטרים': ['l', 1],
+            'מטרים': ['m', 1],
+        }
+        return conversions.get(unit, [None, None])
+
+
+    response = requests.get('http://prices.shufersal.co.il/FileObject/UpdateCategory?catID=0&storeId=413')
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    price_full_url = soup.find("td", string='pricefull')
+    a = price_full_url.parent
+    print('price full data link:')
+    price_url = a.find('a')['href']
+    print(price_url)
+
+    promo_full_url = soup.find("td", string='promofull')
+    b = promo_full_url.parent
+    print('promos full data link:')
+    promo_url = b.find('a')['href']
+    print(promo_url)
+
+    end = time.time()
+    print('enf of scraping', end - start)
+
+
+
+    # request to DataFrame
+    response = urllib.request.urlopen(price_url)
+
+    with gzip.open(response, 'rb') as f:
+        xml_data = f.read()
+
+    root = ET.fromstring(xml_data)
+
+    end = time.time()
+    print('xml to memory', end - start)
+
+    items_list = []
+
+    # Loop through all Item elements
+    for item in root.iter('Item'):
+        # Create a dictionary for the current item
+        item_dict = {}
+        # Loop through all sub-elements of the current item
+        for child in item:
+            item_dict[child.tag] = child.text
+        # Append the dictionary to the list of items
+        items_list.append(item_dict)
+
+    df = pd.DataFrame(items_list)
+
+    # result = df[df['ItemCode'] == '10900145015']
+    # pd.set_option('display.max_rows', None)  # to display all rows
+    # pd.set_option('display.max_columns', None)  # to display all columns
+    # print(result['ItemPrice'])
+
+    end = time.time()
+    print('pandas dataFrame', end - start)
+
+    # Convert data types
+    df['Quantity'] = pd.to_numeric(df['Quantity'])
+    df['QtyInPackage'] = pd.to_numeric(df['QtyInPackage'])
+    df['ItemPrice'] = pd.to_numeric(df['ItemPrice'])
+    df['UnitOfMeasurePrice'] = pd.to_numeric(df['UnitOfMeasurePrice'])
+
+    processed_catalog_numbers = []
+
+    current_timestamp = int(timezone.now().timestamp())
+    retailer, created = Retailer.objects.get_or_create(name='Shufersal', defaults={'last_scan': current_timestamp})
+    retailer.last_scan = current_timestamp
+    retailer.save()
+
+    created_itemcodes = []
+
+    try:
+        with transaction.atomic():
+            for index, row in df.iterrows():
+                processed_catalog_numbers.append(row['ItemCode'])
+                num += 1
+                # if row['ManufacturerName'] is None or row['ManufacturerName'] == 'None':
+                #     manufacturer_name = 'כללי'
+                # else:
+                #     manufacturer_name = row['ManufacturerName']
+                # manufacturer = Manufacturer.objects.get_or_create(name=manufacturer_name)
+                # # print(manufacturer[0], type(manufacturer[0]))
+
+                unit_detail = units_converter(row['UnitQty'])
+
+                defaults = {
+                    # 'name': row['ItemName'],
+                    'quantity': row['Quantity'],
+                    'product_status': row['ItemStatus'],
+                    'discount_status': row['AllowDiscount'],
+                    'unit_of_measure_price': row['UnitOfMeasurePrice'],
+                    'units': unit_detail[0],
+                    'unit_of_measure': unit_detail[1],
+                    # 'manufacturer_id': manufacturer[0],
+                }
+                try:
+                    product, created = Product.objects.update_or_create(catalog_number=row['ItemCode'], defaults=defaults)
+
+                    if created:
+                        created_itemcodes.append(row['ItemCode'])
+
+                except IntegrityError:
+                    product = Product.objects.get(catalog_number=row['ItemCode'])
+                    # product.name = row['ItemName']
+                    product.quantity = row['Quantity']
+                    product.product_status = True if row['ItemStatus'] == 1 else False
+                    product.discount_status = True if row['AllowDiscount'] == 1 else False
+                    product.unit_of_measure_price = row['UnitOfMeasurePrice']
+                    product.units = unit_detail[0]
+                    product.unit_of_measure = unit_detail[1]
+                    # product.manufacturer_id = manufacturer[0]
+                    product.save()
+
+
+                try:
+                    price, created = Price.objects.update_or_create(product_id=product, retailer_id=retailer, defaults={'price': row['ItemPrice']})
+
+                except IntegrityError as i:
+                    print(i)
+
+    except IntegrityError as i:
+        print(i)
+
+
+    print(num)
+    end = time.time()
+    print(end - start)
+
+    # Set product_status to False
+    unprocessed_products = Product.objects.exclude(catalog_number__in=processed_catalog_numbers)
+    count = unprocessed_products.update(product_status=False)
+    print(f"{count} products were updated")
+
+    end = time.time()
+    print(end - start)

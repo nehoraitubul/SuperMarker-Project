@@ -24,7 +24,7 @@ class SearchSerializer(serializers.ModelSerializer):
 
     def get_more_info(self, obj):
         try:
-            price = Price.objects.filter(retailer_id=5, product_id=obj.id).first()
+            price = Price.objects.filter(retailer_id=1, product_id=obj.id).first()
             price_info = price.price
 
             manufacturer_info = obj.manufacturer_id

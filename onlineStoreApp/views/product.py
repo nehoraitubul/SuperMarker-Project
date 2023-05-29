@@ -12,7 +12,7 @@ from onlineStoreApp.serializers.product import ProductSerializer
 
 @api_view(['GET'])
 def product(request, product):
-    retailer_id = 5
+    retailer_id = 1
     product_instance = get_object_or_404(Product, catalog_number=product)
     if not product_instance.product_status:
         return Response(data={'error': 'Product is not available'}, status=status.HTTP_400_BAD_REQUEST)

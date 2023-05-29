@@ -8,7 +8,8 @@ import django
 
 django.setup()
 
-from onlineStoreApp.models import Product, ProductInfo, Category, SubCategory, SubSubCategory, SubSubSubCategory
+from onlineStoreApp.models import Product, ProductInfo, Category, SubCategory, SubSubCategory, SubSubSubCategory, \
+    Manufacturer
 
 import requests
 from bs4 import BeautifulSoup
@@ -63,7 +64,7 @@ for k in products_without_info:
     # k.save()
     # sys.exit()
     num += 1
-    time.sleep(6.7)
+    time.sleep(1)
 
 
     # base_link = f'https://www.shufersal.co.il/online/he/p/P_3161911229199/json?cartContext%5BopenFrom%5D=CATEGORY&cartContext%5BrecommendationType%5D=PRODUCT'
@@ -131,10 +132,10 @@ for k in products_without_info:
             categories = soup.find('div', class_='modal-dialog')
             data_gtm = categories.attrs['data-gtm']
             data_dict = json.loads(data_gtm)
-            category_level1 = data_dict['categoryLevel1']
-            category_level2 = data_dict['categoryLevel2']
-            category_level3 = data_dict['categoryLevel3']
-            category_level4 = data_dict['categoryLevel4']
+            category_level1 = data_dict['categoryLevel1'].strip()
+            category_level2 = data_dict['categoryLevel2'].strip()
+            category_level3 = data_dict['categoryLevel3'].strip()
+            category_level4 = data_dict['categoryLevel4'].strip()
 
         else:
             categories = soup.find_all('li', itemprop='itemListElement')
@@ -157,8 +158,10 @@ for k in products_without_info:
             category_level4 = category_names[3]
 
 
-        if 'יום העצמאות' in [category_level1, category_level2, category_level3, category_level4] or 'מה חדש' in [
-            category_level1, category_level2, category_level3, category_level4] or 'מתנות לחג'  in [category_level1, category_level2, category_level3, category_level4]:
+        restricted_categories = ['יום העצמאות', 'שבועות', 'מה חדש', 'מתנות לחג', 'פסח בשופרסל Online', 'חדש על המדף', ]
+
+
+        if any(category in restricted_categories for category in [category_level1, category_level2, category_level3, category_level4]):
             k.checked = 1
             k.save()
             continue
@@ -173,13 +176,15 @@ for k in products_without_info:
 
         try:
             category_1 = Category.objects.get(name=category_level1)
+            print(category_1)
         except Category.DoesNotExist as e:
-            print(f"Error creating category 2: {e}")
+            print(f"Error creating category 1: {e}")
             category_1 = Category(name=category_level1)
             category_1.save()
 
         try:
             category_2 = SubCategory.objects.get(name=category_level2, category_id=category_1)
+            print(category_2)
         except SubCategory.DoesNotExist as e:
             print(f"Error creating category 2: {e}")
             category_2 = SubCategory(name=category_level2, category_id=category_1)
@@ -187,15 +192,17 @@ for k in products_without_info:
 
         try:
             category_3 = SubSubCategory.objects.get(name=category_level3, sub_category_id=category_2)
+            print(category_3)
         except SubSubCategory.DoesNotExist as e:
-            print(f"Error creating category 2: {e}")
+            print(f"Error creating category 3: {e}")
             category_3 = SubSubCategory(name=category_level3, sub_category_id=category_2)
             category_3.save()
 
         try:
             category_4 = SubSubSubCategory.objects.get(name=category_level4, sub_sub_category_id=category_3)
+            print(category_4)
         except SubSubSubCategory.DoesNotExist as e:
-            print(f"Error creating category 3: {e}")
+            print(f"Error creating category 4: {e}")
             category_4 = SubSubSubCategory(name=category_level4, sub_sub_category_id=category_3)
             category_4.save()
         # except IntegrityError:
@@ -241,12 +248,41 @@ for k in products_without_info:
                 print(i.find('div', class_='text').text)
 
             elif name == 'כשרות:':
-                product_info.kosher_type = i.find('div', class_='text').text
+                product_info.kosher = i.find('div', class_='text').text
                 print(i.find('div', class_='text').text)
 
             elif name == 'פסח:':
-                product_info.kosher_type = i.find('div', class_='text').text
+                product_info.passover = i.find('div', class_='text').text
                 print(i.find('div', class_='text').text)
+
+            # ADDED
+
+            elif name == 'רבנות מקומית:':
+                product_info.local_rabbinate = i.find('div', class_='text').text
+                print(i.find('div', class_='text').text)
+
+
+            elif name == 'ארץ ייצור:':
+                product_info.local_rabbinate = i.find('div', class_='text').text
+                print(i.find('div', class_='text').text)
+
+
+            elif name == 'אבקת חלב נוכרי:':
+                product_info.foreign_milk = i.find('div', class_='text').text
+                print(i.find('div', class_='text').text)
+
+
+            elif name == 'מותג/יצרן:':
+                manu_name = i.find('div', class_='text').text
+                if manu_name is None or manu_name == 'None':
+                    manu_name = 'כללי'
+
+                manufacturer = Manufacturer.objects.get_or_create(name=manu_name)
+                k.manufacturer_id = manufacturer[0]
+                print(i.find('div', class_='text').text)
+
+            # ADDED
+
         except Exception:
             pass
 
@@ -347,21 +383,21 @@ for k in products_without_info:
                 elif a == 'סידן':
                     product_info.calcium = inde_amount
 
-                # # ADDED
-                #
-                # elif a == 'תאית':
-                #     product_info.cellulose = inde_amount
-                #
-                # elif a == 'טאורין':
-                #     product_info.taurine = inde_amount
-                #
-                # elif a == 'זרחן':
-                #     product_info.phosphorus = inde_amount
-                #
-                # elif a == 'לחות':
-                #     product_info.humidity = inde_amount
-                #
-                # # ADDED
+                # ADDED
+
+                elif a == 'תאית':
+                    product_info.cellulose = inde_amount
+
+                elif a == 'טאורין':
+                    product_info.taurine = inde_amount
+
+                elif a == 'זרחן':
+                    product_info.phosphorus = inde_amount
+
+                elif a == 'לחות':
+                    product_info.humidity = inde_amount
+
+                # ADDED
 
 
             except Exception:
@@ -390,6 +426,34 @@ for k in products_without_info:
         print('alergiesTraces_info', alergiesTraces_info)
     except Exception:
         pass
+
+
+    # ADDED
+    try:
+        # סימונים
+        symbols = soup.find('li', class_='productSymbols')
+        product_symbols_numbers = symbols.find_all('img')
+        all_symbols = ''
+        for symbol in product_symbols_numbers:
+            alt_text = symbol['alt']
+            number = alt_text.split('.')[-1]
+            all_symbols += '-' + number
+        product_info.product_symbols = all_symbols
+        print('product_symbols', all_symbols)
+    except Exception:
+        pass
+
+
+    try:
+        # שם מוצר בPRODUCT
+        name = soup.find('h3', class_='description').text.strip()
+        if not name:
+            name = soup.find('h1', class_='description').text.strip()
+        k.name = name
+        print('name', name)
+    except Exception:
+        pass
+    # ADDED
 
     # print('here')
     product_info.save()

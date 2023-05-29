@@ -78,13 +78,14 @@ class Category(models.Model):
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False, unique=True)
 
-
+##### ADDED unique=True BELOW #####
 
 class SubCategory(models.Model):
 
     class Meta:
         db_table = 'sub_categories'
         ordering = ['id']
+        unique_together = ('name', 'category_id')
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
     category_id = models.ForeignKey('Category', on_delete=models.RESTRICT, db_column='category_id', null=True, blank=True)
@@ -96,6 +97,7 @@ class SubSubCategory(models.Model):
     class Meta:
         db_table = 'sub_sub_categories'
         ordering = ['id']
+        unique_together = ('name', 'sub_category_id')
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
     sub_category_id = models.ForeignKey('SubCategory', on_delete=models.RESTRICT, db_column='sub_category_id', null=True, blank=True)
@@ -107,11 +109,12 @@ class SubSubSubCategory(models.Model):
     class Meta:
         db_table = 'sub_sub_sub_categories'
         ordering = ['id']
+        unique_together = ('name', 'sub_sub_category_id')
 
     name = models.CharField(max_length=256, db_column='name', null=False, blank=False)
     sub_sub_category_id = models.ForeignKey('SubSubCategory', on_delete=models.RESTRICT, db_column='sub_sub_category_id', null=True, blank=True)
 
-
+##### ADDED unique=True ABOVE #####
 
 class Promo(models.Model):
 
@@ -188,10 +191,21 @@ class ProductInfo(models.Model):
     sugar = models.CharField(max_length=128, db_column='sugar', null=True, blank=True)       # סוכר
     iron = models.CharField(max_length=128, db_column='iron', null=True, blank=True)  # ברזל
     calcium = models.CharField(max_length=128, db_column='calcium', null=True, blank=True)  # סידן
+    # ADDED
+    cellulose = models.CharField(max_length=128, db_column='cellulose', null=True, blank=True)  # תאית
+    taurine = models.CharField(max_length=128, db_column='taurine', null=True, blank=True)  # טאורין
+    phosphorus = models.CharField(max_length=128, db_column='phosphorus', null=True, blank=True)  # זרחן
+    humidity = models.CharField(max_length=128, db_column='humidity', null=True, blank=True)  # לחות
+    # ADDED
     local_rabbinate = models.CharField(max_length=128, db_column='local_rabbinate', null=True, blank=True)     # רבנות מקומית
     kosher_type = models.CharField(max_length=128, db_column='kosher_type', null=True, blank=True)     #פרווה - חלבי - בשרי
     kosher = models.CharField(max_length=128, db_column='kosher', null=True, blank=True)      # כשרות
     passover = models.CharField(max_length=128, db_column='passover', null=True, blank=True)         # פסח
+    # ADDED
+    foreign_milk = models.CharField(max_length=128, db_column='foreign_milk', null=True, blank=True)  # אבקת חלב נוכרי
+    manufacturing_country = models.CharField(max_length=128, db_column='manufacturing_country', null=True, blank=True)  # ארץ ייצור
+    product_symbols = models.CharField(max_length=128, db_column='product_symbols', null=True, blank=True)  # סימונים
+    # ADDED
     component = models.TextField(db_column='component', null=True, blank=True)        # רכיבים
     allergies_properties = models.CharField(max_length=768, db_column='allergies_properties', null=True, blank=True)        # מכיל לאלרגנים
     allergies_traces = models.CharField(max_length=768, db_column='allergies_traces', null=True, blank=True)         # עלול להכיל לאלרגנים

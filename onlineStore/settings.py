@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =
+SECRET_KEY = 'django-insecure-smq@%htcwp*wxvjj(%6j@#@+=_)-zc^plr4p^wg&@3e^3&%!pr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'onlineStore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'market_project',
+        # 'NAME': 'market_project', # ORIGINAL
+        'NAME': 'supermarket_project_new', # NEW
         'USER': 'postgres',
         'PASSWORD': '0258',
         'HOST': '127.0.0.1',
