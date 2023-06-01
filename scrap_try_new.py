@@ -154,7 +154,9 @@ if __name__ == '__main__':
 
 
                 try:
-                    price, created = Price.objects.update_or_create(product_id=product, retailer_id=retailer, defaults={'price': row['ItemPrice']})
+                    price, created = Price.objects.update_or_create(product_id=product, retailer_id=retailer,
+                                defaults={'price': row['ItemPrice'], 'unit_of_measure_price': row['UnitOfMeasurePrice'],
+                                          'unit_of_measure': unit_detail[1], 'units': unit_detail[0]})
 
                 except IntegrityError as i:
                     print(i)

@@ -45,6 +45,9 @@ class Price(models.Model):
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
     price = models.DecimalField(db_column='price', null=False, blank=False, max_digits=10, decimal_places=2)
+    unit_of_measure_price = models.DecimalField(db_column='unit_of_measure_price', null=True, blank=True, max_digits=10, decimal_places=2)
+    unit_of_measure = models.CharField(max_length=256, db_column='unit_of_measure', null=True, blank=True)
+    units = models.CharField(max_length=128, db_column='units', null=True, blank=True)
 
 
 
