@@ -7,7 +7,7 @@ class PriceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Price
-        fields = ('price',)
+        fields = ('price', 'unit_of_measure_price', 'unit_of_measure', 'units')
 
 class ManufacturerSerializer(serializers.ModelSerializer):
 
@@ -26,10 +26,13 @@ class SearchSerializer(serializers.ModelSerializer):
         try:
             price = Price.objects.filter(retailer_id=1, product_id=obj.id).first()
             price_info = price.price
+            unit_of_measure_price = price.unit_of_measure_price
+            unit_of_measure = price.unit_of_measure
+            units = price.units
 
             manufacturer_info = obj.manufacturer_id
             manu_info =  ManufacturerSerializer(manufacturer_info).data
 
-            return {'price_info': price_info, 'manu_info': manu_info}
+            return {'price_info': price_info, 'unit_of_measure_price': unit_of_measure_price, 'unit_of_measure': unit_of_measure, 'units': units, 'manu_info': manu_info}
         except Manufacturer.DoesNotExist:
             return {}
