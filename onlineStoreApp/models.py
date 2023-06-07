@@ -212,8 +212,11 @@ class ProductInfo(models.Model):
     component = models.TextField(db_column='component', null=True, blank=True)        # רכיבים
     allergies_properties = models.CharField(max_length=768, db_column='allergies_properties', null=True, blank=True)        # מכיל לאלרגנים
     allergies_traces = models.CharField(max_length=768, db_column='allergies_traces', null=True, blank=True)         # עלול להכיל לאלרגנים
-    no_preserv = models.BooleanField(db_column='no_preserv', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
+    no_preserv = models.BooleanField(db_column='no_preserv', null=False, blank=False, default=False) # סימון בריאותי - ללא חומרים משמרים
     lactose_free = models.BooleanField(db_column='lactose_free', null=False, blank=False, default=False) #   סימון בריאותי - מכיל לקטוז
     gluten_free =  models.BooleanField(db_column='gluten_free', null=False, blank=False, default=False) # סימון בריאותי - מכיל גלוטן
     organic =  models.BooleanField(db_column='organic', null=False, blank=False, default=False) # סימון בריאותי - אורגני
+    # ADDED
+    # vegan =  models.BooleanField(db_column='vegan', null=False, blank=False, default=False) # סימון בריאותי - טבעוני
+    # ADDED
     description = models.TextField(db_column='description', null=True, blank=True)  # על המוצר
