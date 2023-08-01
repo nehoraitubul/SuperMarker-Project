@@ -25,6 +25,8 @@ def get_categories(request):
                 'sub_sub_sub_categories': sub_sub_sub_category_serializer.data
             }
             data.append(sub_sub_category_data)
+            data = sorted(data, key=lambda x: len(x['sub_sub_sub_categories']), reverse=True)
+            
 
         category_data = {
             'category': AllCategorySerializer(category).data,
@@ -34,6 +36,8 @@ def get_categories(request):
         response_data.append(category_data)
 
     return Response(response_data)
+
+
     # category = request.query_params.get('category')
     # if category:
     #     sub_category = SubCategory.objects.get(name=category)

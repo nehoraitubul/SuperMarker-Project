@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/search/', include('onlineStoreApp.urls.search')),
     path('api/categories/', include('onlineStoreApp.urls.categories')),
 
+    path('api/main/', include('onlineStoreApp.urls.mainPageProducts')),
+
 ]
