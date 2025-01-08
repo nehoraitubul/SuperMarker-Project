@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac75e63c-923f-47f8-880b-b2d7e441b098" name="Changes" comment="push">
-      <change beforePath="$PROJECT_DIR$/onlineStore/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/settings.py" afterDir="false" />
+    <list default="true" id="ac75e63c-923f-47f8-880b-b2d7e441b098" name="Changes" comment="regular">
+      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/checkoutComparation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/promoDetailSerializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlineStoreApp/urls/checkoutComparation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/onlineStoreApp/views/checkoutComparation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStore/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStoreApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStoreApp/serializers/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/product.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStoreApp/serializers/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrap_try_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/scrap_try_new.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +31,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="06b924b6-3bd5-416f-9e97-3a1853426b3c" />
+        <option name="url" value="https://github.com/nehoraitubul/SuperMarker-Project.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -30,15 +52,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/SuperMarker-Project&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/SuperMarker-Project"
   }
-}</component>
-  <component name="RunManager" selected="Python.web_crawler">
-    <configuration name="manage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+}]]></component>
+  <component name="RunManager" selected="Python.csgoroll2">
+    <configuration name="csgoroll" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SuperMarker-Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -50,28 +72,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-      <option name="PARAMETERS" value="runserver" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="scrap_try" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="SuperMarker-Project" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scrap_try.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/csgoroll.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -80,7 +81,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="web_crawler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="csgoroll2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SuperMarker-Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -92,7 +93,70 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web_crawler.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/csgoroll2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="leetcodepractice" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SuperMarker-Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/leetcodepractice.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scrap_try_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SuperMarker-Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scrap_try_new.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="web_scrawler_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SuperMarker-Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/web_scrawler_new.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -102,15 +166,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.manage" />
-      <item itemvalue="Python.scrap_try" />
-      <item itemvalue="Python.web_crawler" />
+      <item itemvalue="Python.csgoroll2" />
+      <item itemvalue="Python.leetcodepractice" />
+      <item itemvalue="Python.csgoroll" />
+      <item itemvalue="Python.scrap_try_new" />
+      <item itemvalue="Python.web_scrawler_new" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.web_crawler" />
-        <item itemvalue="Python.scrap_try" />
-        <item itemvalue="Python.manage" />
+        <item itemvalue="Python.csgoroll2" />
+        <item itemvalue="Python.csgoroll" />
+        <item itemvalue="Python.scrap_try_new" />
+        <item itemvalue="Python.leetcodepractice" />
+        <item itemvalue="Python.web_scrawler_new" />
       </list>
     </recent_temporary>
   </component>
@@ -144,7 +212,140 @@
       <option name="project" value="LOCAL" />
       <updated>1682805523133</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="push">
+      <created>1682805854486</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682805854486</updated>
+    </task>
+    <task id="LOCAL-00005" summary="push">
+      <created>1683062835839</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683062835839</updated>
+    </task>
+    <task id="LOCAL-00006" summary="push">
+      <created>1683159190747</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683159190747</updated>
+    </task>
+    <task id="LOCAL-00007" summary="push">
+      <created>1683193057353</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683193057353</updated>
+    </task>
+    <task id="LOCAL-00008" summary="push">
+      <created>1683242414368</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683242414368</updated>
+    </task>
+    <task id="LOCAL-00009" summary="regular">
+      <created>1683301395653</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683301395653</updated>
+    </task>
+    <task id="LOCAL-00010" summary="regular">
+      <created>1683587501392</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683587501392</updated>
+    </task>
+    <task id="LOCAL-00011" summary="regular">
+      <created>1683662460377</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683662460377</updated>
+    </task>
+    <task id="LOCAL-00012" summary="regular">
+      <created>1683845839798</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683845839799</updated>
+    </task>
+    <task id="LOCAL-00013" summary="regular">
+      <created>1684157705749</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1684157705749</updated>
+    </task>
+    <task id="LOCAL-00014" summary="regular">
+      <created>1684163977206</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684163977206</updated>
+    </task>
+    <task id="LOCAL-00015" summary="regular">
+      <created>1685343439555</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1685343439555</updated>
+    </task>
+    <task id="LOCAL-00016" summary="regular">
+      <created>1685401191666</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1685401191666</updated>
+    </task>
+    <task id="LOCAL-00017" summary="regular">
+      <created>1685656746885</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1685656746885</updated>
+    </task>
+    <task id="LOCAL-00018" summary="regular">
+      <created>1685721426432</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1685721426432</updated>
+    </task>
+    <task id="LOCAL-00019" summary="regular">
+      <created>1686177919263</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1686177919263</updated>
+    </task>
+    <task id="LOCAL-00020" summary="regular">
+      <created>1690913193917</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1690913193917</updated>
+    </task>
+    <task id="LOCAL-00021" summary="regular">
+      <created>1690915994327</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1690915994327</updated>
+    </task>
+    <task id="LOCAL-00022" summary="regular">
+      <created>1690916700746</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1690916700746</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -162,17 +363,7 @@
     <MESSAGE value="scrap and db for Product-Manuf-Retail-Price" />
     <MESSAGE value="scrap" />
     <MESSAGE value="push" />
-    <option name="LAST_COMMIT_MESSAGE" value="push" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/web_crawler.py</url>
-          <line>381</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="regular" />
+    <option name="LAST_COMMIT_MESSAGE" value="regular" />
   </component>
 </project>

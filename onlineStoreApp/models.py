@@ -125,13 +125,26 @@ class Promo(models.Model):
         db_table = 'promos'
         ordering = ['id']
 
-    type = models.CharField(max_length=256, db_column='type', null=False, blank=False)
-    percent =  models.SmallIntegerField(max_length=128, db_column='percent', null=True, blank=True)
-    fixed = models.SmallIntegerField(max_length=128, db_column='fixed', null=True, blank=True)
-    x = models.SmallIntegerField(max_length=128, db_column='x', null=True, blank=True)
-    y = models.SmallIntegerField(max_length=128, db_column='y', null=True, blank=True)
+    reward_type = models.IntegerField(db_column='reward_type', null=True, blank=True)
+    promotion_id = models.IntegerField(db_column='promotion_id', null=True, blank=True, unique=True)
+    allow_multiple_discounts = models.BooleanField(db_column='allow_multiple_discounts', default=True)
+    description = models.CharField(max_length=256, db_column='description', null=True, blank=True)
+    update_date = models.DateTimeField(db_column='update_date', null=True, blank=True)
+    start_date = models.DateField(db_column='start_date', null=True, blank=True)
+    start_hour = models.TimeField(db_column='start_hour', null=True, blank=True)
+    end_date = models.DateField(db_column='end_date', null=True, blank=True)
+    end_hour = models.TimeField(db_column='end_hour', null=True, blank=True)
+    is_weighted_promo = models.BooleanField(db_column='is_weighted_promo', default=False)
+    min_qty = models.DecimalField(max_digits=10, decimal_places=3, db_column='min_qty', null=True, blank=True)
+    max_qty = models.DecimalField(max_digits=10, decimal_places=3, db_column='max_qty', null=True, blank=True)
+    discount_rate = models.DecimalField(max_digits=10, decimal_places=2, db_column='discount_rate', null=True, blank=True)
+    discount_type = models.IntegerField(db_column='discount_type', null=True, blank=True)
+    discounted_price = models.DecimalField(max_digits=10, decimal_places=2, db_column='discounted_price', null=True,blank=True)
+    min_no_of_item_offered = models.IntegerField(db_column='min_no_of_item_offered', null=True, blank=True)
+    remark = models.CharField(max_length=512, db_column='remark', null=True, blank=True)
     retailer_id = models.ForeignKey('Retailer', on_delete=models.RESTRICT, db_column='retailer_id', null=False, blank=False)
-
+    club_id = models.IntegerField(db_column='club_id', null=True, blank=True)
+    additional_gift_count = models.IntegerField(db_column='additional_gift_count', null=True, blank=True, default=0)
 
 
 class PromoProduct(models.Model):
@@ -142,7 +155,7 @@ class PromoProduct(models.Model):
 
     promo_id = models.ForeignKey('Promo', on_delete=models.RESTRICT, db_column='promo_id', null=False, blank=False)
     product_id = models.ForeignKey('Product', on_delete=models.RESTRICT, db_column='product_id', null=False, blank=False)
-
+    is_gift_item = models.BooleanField(db_column='is_gift_item', default=False)
 
 
 class CartProduct(models.Model):

@@ -1,7 +1,12 @@
-from onlineStoreApp.models import Product, ProductInfo, SubSubSubCategory, SubSubCategory, SubCategory, Category, \
-    Manufacturer, Price
+from onlineStoreApp.models import Product, ProductInfo, SubSubSubCategory, SubSubCategory,\
+    SubCategory, Category, Manufacturer, Price, PromoProduct, Promo
 
 from rest_framework import serializers
+
+class PromoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Promo
+        fields = '__all__'
 
 class CategoryExtendedSerializer4(serializers.ModelSerializer):
 
@@ -54,10 +59,12 @@ class ProductSerializer(serializers.ModelSerializer):
     manufacturer_id = ManufacturerSerializer()
     category_id = CategoryExtendedSerializer1()
     price = serializers.SerializerMethodField('get_product_price')
+    promo_details = serializers.SerializerMethodField('get_promo_details')
 
     class Meta:
         model = Product
-        fields = ('name', 'catalog_number', 'units', 'image', 'unit_of_measure', 'unit_of_measure_price', 'product_info_id', 'manufacturer_id', 'category_id', 'price')
+        fields = ('name', 'catalog_number', 'units', 'image', 'unit_of_measure', 'unit_of_measure_price',
+                  'product_info_id', 'manufacturer_id', 'category_id', 'price', 'promo_details')
 
 
     def get_product_price(self, obj):
@@ -66,3 +73,10 @@ class ProductSerializer(serializers.ModelSerializer):
         if price:
             return PriceSerializer(price).data
         return None
+
+    def get_promo_details(self, obj):
+        retailer_id = self.context.get('retailer_id')
+        promo_products = PromoProduct.objects.filter(product_id=obj.id)
+        promos = Promo.objects.filter(id__in=promo_products.values_list('promo_id', flat=True))
+        promo_serializer = PromoSerializer(promos, many=True)
+        return promo_serializer.data

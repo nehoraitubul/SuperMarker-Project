@@ -22,6 +22,7 @@ urlpatterns = [
     path('api/cart/', include('onlineStoreApp.urls.cart')),
     path('api/search/', include('onlineStoreApp.urls.search')),
     path('api/categories/', include('onlineStoreApp.urls.categories')),
+    path('api/checkout/comparison', include('onlineStoreApp.urls.checkoutComparation')),
 
     path('api/main/', include('onlineStoreApp.urls.mainPageProducts')),
 
