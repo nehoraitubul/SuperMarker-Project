@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-smq@%htcwp*wxvjj(%6j@#@+=_)-zc^plr4p^wg&@3e^3&%!pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'supermarker-project.onrender.com',]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") + ['supermarker-project.onrender.com']
 
 
 # Application definition
