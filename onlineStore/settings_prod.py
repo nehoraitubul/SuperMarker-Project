@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-smq@%htcwp*wxvjj(%6j@#@+=_)-zc^plr4p^wg&@3e^3&%!pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ec2-44-211-201-85.compute-1.amazonaws.com',]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ec2-13-48-123-33.eu-north-1.compute.amazonaws.com',]
 
 
 # Application definition
@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'onlineStore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'super_aws_db',
+        'NAME': 'supermarketdb',
         'USER': 'postgres',
         'PASSWORD': '02580258',
-        'HOST': 'superproject.cjdfcbp7nkk1.us-east-1.rds.amazonaws.com',
+        'HOST': 'supermarketdb.c70ks8cqgmzg.eu-north-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }

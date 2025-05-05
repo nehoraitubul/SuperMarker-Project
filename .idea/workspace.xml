@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac75e63c-923f-47f8-880b-b2d7e441b098" name="Changes" comment="regular">
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/checkoutComparation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/promoDetailSerializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/urls/checkoutComparation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/onlineStoreApp/views/checkoutComparation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStore/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStoreApp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStoreApp/serializers/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onlineStoreApp/serializers/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStoreApp/serializers/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStore/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/asgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStore/settings_prod.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/settings_prod.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineStore/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineStore/wsgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scrap_try_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/scrap_try_new.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,14 +49,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/SuperMarker-Project"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/EcommerceGoogleSheetsProject&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.csgoroll2">
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\SuperMarker-Project" />
+      <recent name="C:\SuperMarker-Project\onlineStore" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.scrap_try_new">
     <configuration name="csgoroll" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SuperMarker-Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -174,11 +177,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.scrap_try_new" />
+        <item itemvalue="Python.web_scrawler_new" />
         <item itemvalue="Python.csgoroll2" />
         <item itemvalue="Python.csgoroll" />
-        <item itemvalue="Python.scrap_try_new" />
         <item itemvalue="Python.leetcodepractice" />
-        <item itemvalue="Python.web_scrawler_new" />
       </list>
     </recent_temporary>
   </component>
@@ -345,7 +348,35 @@
       <option name="project" value="LOCAL" />
       <updated>1690916700746</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="regular">
+      <created>1736378939318</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1736378939318</updated>
+    </task>
+    <task id="LOCAL-00024" summary="regular">
+      <created>1742911230024</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1742911230024</updated>
+    </task>
+    <task id="LOCAL-00025" summary="regular">
+      <created>1742917372207</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1742917372207</updated>
+    </task>
+    <task id="LOCAL-00026" summary="regular">
+      <created>1742917709430</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1742917709430</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
